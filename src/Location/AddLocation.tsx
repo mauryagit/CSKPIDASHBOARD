@@ -11,6 +11,7 @@ export class AddLocation extends React.Component<ILocation> {
     this.state = { locationName: "" };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.onEdit = this.onEdit.bind(this);
   }
 
   handleChange(e: any): void {
@@ -18,12 +19,14 @@ export class AddLocation extends React.Component<ILocation> {
   }
   handleSubmit(e: any): void {
     e.preventDefault();
-    console.info(this.state.locationName);
+    // console.info(this.state.locationName);
     alert(this.state.locationName);
+    //onEdit={this.onEdit} onDelete={this.onDelete}
   }
 
   onEdit(e: string) {
-    alert(e);
+    this.setState({ locationName: e });
+    console.info(this.state.locationName);
   }
   onDelete(e: string) {
     alert(e);
@@ -47,7 +50,7 @@ export class AddLocation extends React.Component<ILocation> {
             Save
           </button>
           <hr />
-          <LocationList onEdit={this.onEdit} onDelete={this.onDelete} />
+          <LocationList onEdit={this.onEdit} />
         </form>
       </div>
     );

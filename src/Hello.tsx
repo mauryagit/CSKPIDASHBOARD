@@ -35,7 +35,7 @@ export class Hello extends React.Component<Props> {
           <Route
             path="/"
             render={() => (
-              <Home title="Oracle Intergration Management" description={des} />
+              <Home title="Oracle Integration Management" description={des} />
             )}
           />
         </Switch>

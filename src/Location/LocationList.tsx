@@ -2,10 +2,14 @@ import * as React from "react";
 import { IDataProvider } from "../Services/IDataProvider";
 import { MockLocationData } from "../Services/MockData";
 
-export class LocationList extends React.Component<IDataProvider> {
+interface ILocationList extends IDataProvider {
+  onEdit: string;
+}
+export class LocationList extends React.Component<ILocationList> {
   constructor(props: IDataProvider) {
     super(props);
     this.state = { items: [] };
+    this.onEdit = this.onEdit.bind(this);
   }
 
   componentDidMount() {
@@ -14,7 +18,7 @@ export class LocationList extends React.Component<IDataProvider> {
     this.setState({ items: items });
   }
   onEdit(e: string) {
-    alert(e);
+    this.props.onEdit(e);
   }
   render() {
     return (
@@ -46,30 +50,40 @@ class Locationrow extends React.Component<rowDetails> {
   constructor(props: rowDetails) {
     super(props);
     this.handleEdit = this.handleEdit.bind(this);
-    //  this.handleDelete = this.handleDelete.bind(this);
   }
 
-  handleEdit(e: string) {
-    //this.props.edit(e.target.value);
-    console.log("");
+  handleDelete(e: any): void {
+    e.preventDefault();
+  }
+
+  handleEdit(e: any): void {
+    e.preventDefault();
+    let name = e.target.parentNode.parentElement.firstChild.textContent;
+    console.log(name);
+    this.props.edit(name);
   }
 
   render() {
+    let this1 = this;
     return this.props.rows.map(function(value, index) {
       return (
         <tr key={value.ID}>
-          <td>{value.Title}</td>
+          <td id="name">{value.Title}</td>
           <td>
             <button
               type="button"
               className="btn btn-dark"
-              onClick={this.handleEdit}
+              onClick={this1.handleEdit}
             >
               Edit
             </button>
           </td>
           <td>
-            <button type="button" className="btn btn-danger">
+            <button
+              type="button"
+              className="btn btn-danger"
+              onClick={this1.handleDelete}
+            >
               Delete
             </button>
           </td>
