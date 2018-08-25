@@ -59,7 +59,7 @@ class Locationrow extends React.Component<rowDetails> {
   handleEdit(e: any): void {
     e.preventDefault();
     let name = e.target.parentNode.parentElement.firstChild.textContent;
-    console.log(name);
+    // console.log(name);
     this.props.edit(name);
   }
 

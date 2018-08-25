@@ -1,7 +1,8 @@
 import * as React from "react";
-import { LocationList } from "./LocationList.tsx";
+import { LocationList } from "./LocationList";
+import { IDataProvider } from "../Services/IDataProvider";
 
-interface ILocation {
+interface ILocation extends IDataProvider {
   title: string;
 }
 
@@ -19,14 +20,12 @@ export class AddLocation extends React.Component<ILocation> {
   }
   handleSubmit(e: any): void {
     e.preventDefault();
-    // console.info(this.state.locationName);
     alert(this.state.locationName);
-    //onEdit={this.onEdit} onDelete={this.onDelete}
   }
 
   onEdit(e: string) {
     this.setState({ locationName: e });
-    console.info(this.state.locationName);
+    this.props.addLocation(this.state.locationName);
   }
   onDelete(e: string) {
     alert(e);
@@ -44,6 +43,7 @@ export class AddLocation extends React.Component<ILocation> {
             id="locationName"
             className="form-control mb-4"
             placeholder="Location Name"
+            value={this.state.locationName}
             onChange={this.handleChange}
           />
           <button className="btn btn-info btn-block" type="submit">
