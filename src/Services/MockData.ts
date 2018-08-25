@@ -1,27 +1,42 @@
 export interface ILocation {
-  title: string;
+  Title: string;
+  ID: number;
 }
 export class MockLocationData {
-  private locations: ILocation[] = [];
+  public locations: ILocation[] = [];
 
   constructor() {
     //console.info(JSON.stringify(this.getLocation()));
+    const this1 = this;
+    let items: any = this.getLocation();
+    items.d.results.map(function(val, index) {
+      this1.locations.push({
+        Title: val.Title,
+        ID: val.ID
+      });
+    });
   }
   getLocationForService(): void {}
 
-  addLocation(name: string) {
-    this.locations.push({ title: name });
-  }
-  updateLocation(oldvalue: string, newvalue: string) {
-    let location: ILocation[] = this.locations.filter(function(val, i, arr) {
-      return val.title.toLowerCase() !== oldvalue.toLowerCase();
+  addLocation(obj: any[]) {
+    this.locations.push({
+      ID: obj.ID,
+      Title: obj.Title
     });
-    location.push({ title: name });
+  }
+  updateLocation(oldvalue: any[], newvalue: any[]) {
+    let location: ILocation[] = this.locations.filter(function(val, i, arr) {
+      return val.Title.toLowerCase() !== oldvalue.Title.toLowerCase();
+    });
+    location.push({
+      ID: newvalue.ID,
+      Title: newvalue.Title
+    });
     this.locations = location;
   }
   deleteLocation(value: string) {
     let location: ILocation[] = this.locations.filter(function(val, i, arr) {
-      return val.title.toLowerCase() !== value.toLowerCase();
+      return val.Title.toLowerCase() !== value.toLowerCase();
     });
     this.locations = location;
   }

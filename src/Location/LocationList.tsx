@@ -1,22 +1,18 @@
 import * as React from "react";
 import { IDataProvider } from "../Services/IDataProvider";
-import { MockLocationData } from "../Services/MockData";
 
 interface ILocationList extends IDataProvider {
   onEdit: string;
+  items: any[];
 }
 export class LocationList extends React.Component<ILocationList> {
   constructor(props: IDataProvider) {
     super(props);
-    this.state = { items: [] };
+    // this.state = { items: [] };
     this.onEdit = this.onEdit.bind(this);
   }
 
-  componentDidMount() {
-    var t = new MockLocationData();
-    const items = t.getLocation().d.results;
-    this.setState({ items: items });
-  }
+  componentDidMount() {}
   onEdit(e: string) {
     this.props.onEdit(e);
   }
@@ -33,7 +29,7 @@ export class LocationList extends React.Component<ILocationList> {
             </tr>
           </thead>
           <tbody>
-            <Locationrow rows={this.state.items} edit={this.onEdit} />
+            <Locationrow rows={this.props.items} edit={this.onEdit} />
           </tbody>
         </table>
       </div>
@@ -42,7 +38,7 @@ export class LocationList extends React.Component<ILocationList> {
 }
 
 interface rowDetails {
-  rows: string[];
+  rows: any[];
   edit: string;
 }
 

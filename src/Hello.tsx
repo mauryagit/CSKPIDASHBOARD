@@ -21,7 +21,6 @@ export class Hello extends React.Component<Props> {
      including versions of Lorem Ipsum.`;
     return (
       <div>
-        <h1> {this.props.name}</h1>
         <Switch>
           <Route
             path="/products"
