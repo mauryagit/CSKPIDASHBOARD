@@ -8,7 +8,7 @@ interface ILocationList extends IDataProvider {
 export class LocationList extends React.Component<ILocationList> {
   constructor(props: IDataProvider) {
     super(props);
-    // this.state = { items: [] };
+    this.state = { locationitems: this.props.items };
     this.onEdit = this.onEdit.bind(this);
   }
 
@@ -17,6 +17,7 @@ export class LocationList extends React.Component<ILocationList> {
     this.props.onEdit(e);
   }
   render() {
+    var $this = this;
     return (
       <div className="container">
         <h2>Location Details</h2>
@@ -29,7 +30,11 @@ export class LocationList extends React.Component<ILocationList> {
             </tr>
           </thead>
           <tbody>
-            <Locationrow rows={this.props.items} edit={this.onEdit} />
+            {this.state.locationitems.map(function(item, index) {
+              return (
+                <Locationrow key={item.ID} row={item} edit={$this.onEdit} />
+              );
+            })}
           </tbody>
         </table>
       </div>
@@ -37,9 +42,10 @@ export class LocationList extends React.Component<ILocationList> {
   }
 }
 
-interface rowDetails {
-  rows: any[];
-  edit: string;
+interface rowDetails extends ILocationList {
+  row: any;
+  edit: any;
+  //delete: any[];
 }
 
 class Locationrow extends React.Component<rowDetails> {
@@ -60,31 +66,29 @@ class Locationrow extends React.Component<rowDetails> {
   }
 
   render() {
-    let this1 = this;
-    return this.props.rows.map(function(value, index) {
-      return (
-        <tr key={value.ID}>
-          <td id="name">{value.Title}</td>
-          <td>
-            <button
-              type="button"
-              className="btn btn-dark"
-              onClick={this1.handleEdit}
-            >
-              Edit
-            </button>
-          </td>
-          <td>
-            <button
-              type="button"
-              className="btn btn-danger"
-              onClick={this1.handleDelete}
-            >
-              Delete
-            </button>
-          </td>
-        </tr>
-      );
-    });
+    let item = this.props.row;
+    return (
+      <tr key={item.ID}>
+        <td id="name">{item.Title}</td>
+        <td>
+          <button
+            type="button"
+            className="btn btn-dark"
+            onClick={this.handleEdit}
+          >
+            Edit
+          </button>
+        </td>
+        <td>
+          <button
+            type="button"
+            className="btn btn-danger"
+            onClick={this.handleDelete}
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    );
   }
 }

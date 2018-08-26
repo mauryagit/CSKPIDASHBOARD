@@ -8,6 +8,7 @@ interface ILocation extends IDataProvider {
 }
 
 export class AddLocation extends React.Component<ILocation> {
+  private t: any;
   constructor(props: ILocation) {
     super(props);
     this.state = { locationName: "" };
@@ -15,21 +16,25 @@ export class AddLocation extends React.Component<ILocation> {
     this.handleChange = this.handleChange.bind(this);
     this.onEdit = this.onEdit.bind(this);
 
-    var t = new MockLocationData();
-    this.state = { obj: t };
-    const items = t.locations; //t.getLocation().d.results;
+    this.t = new MockLocationData();
+
+    const items = this.t.locations;
     this.state = { items: items };
   }
 
   handleChange(e: any): void {
     this.setState({ locationName: e.target.value });
   }
+
   handleSubmit(e: any): void {
     e.preventDefault();
     //alert(this.state.locationName);
-    var t: MockLocationData = this.state.obj;
-    t.addLocation({ Title: this.state.locationName, ID: t.locations.length });
-    let items: any[] = t.locations;
+
+    this.t.addLocation({
+      Title: this.state.locationName,
+      ID: this.t.locations.length
+    });
+    let items: any[] = this.t.locations;
     // items.push({ID: items.length , Title: this.state.locationName});
     this.setState({ items: items });
     //this.props.addLocation(this.state.locationName);
