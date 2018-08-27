@@ -21,6 +21,11 @@ export class Header extends React.Component {
             </Link>
           </li>
           <li className="nav-item">
+            <Link className="nav-link" to="/operationarea">
+              Add Operation Area
+            </Link>
+          </li>
+          <li className="nav-item">
             <Link className="nav-link" to="/contactus">
               ContactUs
             </Link>

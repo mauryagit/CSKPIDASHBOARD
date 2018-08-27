@@ -2,19 +2,27 @@ import * as React from "react";
 import { IDataProvider } from "../Services/IDataProvider";
 
 interface ILocationList extends IDataProvider {
-  onEdit: string;
+  onEdit: any[];
+  onDelete: any[];
   items: any[];
 }
 export class LocationList extends React.Component<ILocationList> {
   constructor(props: IDataProvider) {
     super(props);
-    this.state = { locationitems: this.props.items };
+
+    this.state = {
+      locationitems: this.props.items
+    };
     this.onEdit = this.onEdit.bind(this);
+    this.onDelete = this.onDelete.bind(this);
   }
 
-  componentDidMount() {}
   onEdit(e: string) {
     this.props.onEdit(e);
+  }
+  onDelete(e: string) {
+    debugger;
+    this.props.onDelete(e);
   }
   render() {
     var $this = this;
@@ -30,9 +38,14 @@ export class LocationList extends React.Component<ILocationList> {
             </tr>
           </thead>
           <tbody>
-            {this.state.locationitems.map(function(item, index) {
+            {this.props.items.map(function(item, index) {
               return (
-                <Locationrow key={item.ID} row={item} edit={$this.onEdit} />
+                <Locationrow
+                  key={item.ID}
+                  row={item}
+                  edit={$this.onEdit}
+                  delete={$this.onDelete}
+                />
               );
             })}
           </tbody>
@@ -44,32 +57,43 @@ export class LocationList extends React.Component<ILocationList> {
 
 interface rowDetails extends ILocationList {
   row: any;
-  edit: any;
-  //delete: any[];
+  edit: any[];
+  delete: any[];
 }
 
 class Locationrow extends React.Component<rowDetails> {
   constructor(props: rowDetails) {
     super(props);
     this.handleEdit = this.handleEdit.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   handleDelete(e: any): void {
     e.preventDefault();
+    let name = e.target.parentNode.parentElement.firstChild.textContent;
+    let id = e.target.parentNode.parentElement.firstChild.getAttribute(
+      "data-id"
+    );
+    this.props.delete({ ID: id, Title: name });
   }
 
   handleEdit(e: any): void {
+    debugger;
     e.preventDefault();
     let name = e.target.parentNode.parentElement.firstChild.textContent;
-    // console.log(name);
-    this.props.edit(name);
+    let id = e.target.parentNode.parentElement.firstChild.getAttribute(
+      "data-id"
+    );
+    this.props.edit({ ID: id, Title: name });
   }
 
   render() {
     let item = this.props.row;
     return (
-      <tr key={item.ID}>
-        <td id="name">{item.Title}</td>
+      <tr>
+        <td id="name" data-id={item.ID}>
+          {item.Title}
+        </td>
         <td>
           <button
             type="button"

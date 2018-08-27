@@ -34,9 +34,10 @@ export class MockLocationData {
     });
     this.locations = location;
   }
-  deleteLocation(value: string) {
+  deleteLocation(value: any[]) {
+    debugger;
     let location: ILocation[] = this.locations.filter(function(val, i, arr) {
-      return val.Title.toLowerCase() !== value.toLowerCase();
+      return val.ID !== parseInt(value["ID"]);
     });
     this.locations = location;
   }
@@ -74,10 +75,10 @@ export class MockLocationData {
               type: "SP.Data.LocationListItem"
             },
             FileSystemObjectType: 0,
-            Id: 3,
+            Id: 2,
             ContentTypeId: "0x01005AE223F7327561418DF124BD52613CFB",
             Title: "SMD",
-            ID: 3,
+            ID: 2,
             Modified: "2018-08-23T09:19:12Z",
             Created: "2018-08-23T09:19:12Z",
             AuthorId: 2,

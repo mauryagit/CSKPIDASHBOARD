@@ -4,6 +4,7 @@ import { Home } from "./Home";
 import { Products } from "./Products";
 import { Contact } from "./Contact";
 import { AddLocation } from "./Location/AddLocation";
+import { AddOperationArea } from "./Operationarea/AddOperation";
 
 interface Props {
   name: string;
@@ -31,6 +32,7 @@ export class Hello extends React.Component<Props> {
             render={() => <Contact contactus="Abc@g.com" />}
           />
           <Route path="/location" render={() => <AddLocation title="a" />} />
+          <Route path="/operationarea" render={() => <AddOperationArea />} />
           <Route
             path="/"
             render={() => (

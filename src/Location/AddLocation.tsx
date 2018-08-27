@@ -9,43 +9,82 @@ interface ILocation extends IDataProvider {
 
 export class AddLocation extends React.Component<ILocation> {
   private t: any;
+  private oldlocationvalue: any;
   constructor(props: ILocation) {
     super(props);
-    this.state = { locationName: "" };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.onEdit = this.onEdit.bind(this);
-
+    this.onDelete = this.onDelete.bind(this);
     this.t = new MockLocationData();
-
     const items = this.t.locations;
-    this.state = { items: items };
+    this.state = {
+      items: items,
+      locationName: "",
+      command: "submit",
+      active: ""
+    };
   }
 
   handleChange(e: any): void {
-    this.setState({ locationName: e.target.value });
+    let input = e.target;
+    this.setState({
+      locationName: input.value.toUpperCase(),
+      active: "true"
+    });
   }
 
   handleSubmit(e: any): void {
     e.preventDefault();
-    //alert(this.state.locationName);
+    let commandvalue: string = this.state.command;
+    switch (commandvalue) {
+      case "submit":
+        this.addLocationtoRemote();
+        break;
+      case "update":
+        this.updateLocationRemote();
+        break;
+    }
+    this.loadItems();
+    this.resetControl();
+  }
 
+  loadItems() {
+    let items: any[] = this.t.locations;
+    this.setState({ items: items });
+  }
+
+  addLocationtoRemote() {
     this.t.addLocation({
       Title: this.state.locationName,
-      ID: this.t.locations.length
+      ID: this.t.locations.length + 1
     });
-    let items: any[] = this.t.locations;
-    // items.push({ID: items.length , Title: this.state.locationName});
-    this.setState({ items: items });
-    //this.props.addLocation(this.state.locationName);
+  }
+  updateLocationRemote() {
+    let previousLocation: any = this.oldlocationvalue;
+    let udpateLocation: any = {
+      ID: previousLocation["ID"],
+      Title: this.state.locationName
+    };
+    this.t.updateLocation(previousLocation, udpateLocation);
   }
 
-  onEdit(e: string) {
-    this.setState({ locationName: e });
-    //this.props.addLocation(e);
+  resetControl() {
+    this.setState({
+      locationName: "",
+      command: "submit",
+      active: ""
+    });
   }
-  onDelete(e: string) {
-    alert(e);
+
+  onEdit(e: any) {
+    this.oldlocationvalue = e;
+    this.setState({ locationName: e["Title"] });
+    this.state.command = "update";
+  }
+  onDelete(e: any[]) {
+    this.t.deleteLocation(e);
+    this.loadItems();
   }
   render() {
     return (
@@ -63,11 +102,20 @@ export class AddLocation extends React.Component<ILocation> {
             value={this.state.locationName}
             onChange={this.handleChange}
           />
-          <button className="btn btn-info btn-block" type="submit">
+          <button
+            className="btn btn-info btn-block"
+            type="submit"
+            data-command={this.state.command}
+            disabled={!this.state.active}
+          >
             Save
           </button>
           <hr />
-          <LocationList onEdit={this.onEdit} items={this.state.items} />
+          <LocationList
+            onEdit={this.onEdit}
+            items={this.state.items}
+            onDelete={this.onDelete}
+          />
         </form>
       </div>
     );
